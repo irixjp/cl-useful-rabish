@@ -1,0 +1,22 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '(:cl-useful-rabish) :silent t)
+  )
+
+(defpackage :ros.script.dockerhub-tags.3789980933
+  (:use :cl)
+  (:import-from :cl-useful-rabish/dockerhub-count :get-image-tags-list))
+(in-package :ros.script.dockerhub-tags.3789980933)
+
+(defun main (image &rest argv)
+  (declare (ignorable argv))
+  (handler-case
+      (format t "~&~{~A~%~}" (get-image-tags-list image))
+    (error (e)
+      (format t "~&Error: ~A~%" e))))
+;;; vim: set ft=lisp lisp:

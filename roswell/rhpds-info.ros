@@ -10,15 +10,13 @@ exec ros -Q -- $0 "$@"
 
 (defpackage :ros.script.rhpds-info.3788322313
   (:use :cl)
-  (:import-from :cl-useful-rabish/rhpds-info
-                :make-ansible-inventory
-                :students-info-list))
+  (:import-from :cl-useful-rabish/rhpds-info))
 (in-package :ros.script.rhpds-info.3788322313)
 
 (defun main (url &rest argv)
   (declare (ignorable argv))
   (handler-case
-      (make-ansible-inventory (students-info-list url))
+      (cl-useful-rabish/rhpds-info:make-ansible-inventory (students-info-list url))
     (error (e)
       (format *standard-output* "~&Error: ~A~%" e)
       (uiop:quit -1))))

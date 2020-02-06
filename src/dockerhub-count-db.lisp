@@ -1,8 +1,7 @@
 (defpackage cl-useful-rabish/dockerhub-count-db
   (:use :cl)
   (:import-from :cl-dbi)
-  (:import-from :uiop)
-  (:import-from :cl-useful-rabish/dockerhub-count-db)
+  (:import-from :cl-useful-rabish/dockerhub-count :get-image-pull-count)
   (:documentation "Show container image infomation that is gotten from docekrhub."))
 (in-package :cl-useful-rabish/dockerhub-count-db)
 
@@ -31,18 +30,18 @@
   (dbi:with-connection (conn :sqlite3 :database-name db-path)
     (dbi:do-sql conn (format nil "DROP TABLE ~A" *table-name*))))
 
-(defun insert-data (db-path name)
-  (let ((data (cl-dockerhub-info:get-image-info name "pull_count")))
+(defun insert-count-data (db-path image)
+  (let ((data (get-image-pull-count image)))
     (dbi:with-connection (conn :sqlite3 :database-name db-path)
       (dbi:do-sql conn
         (format nil "INSERT INTO ~A values(datetime('now', 'localtime'), '~A', '~A');"
-                *table-name* name data)))))
+                *table-name* image data)))))
 
-(defun show-all ()
-  (dbi:with-connection (conn :sqlite3 :database-name *db-name*)
+(defun show-all-count-data (db-path)
+  (dbi:with-connection (conn :sqlite3 :database-name db-path)
     (fetch-db conn "select * from dockerhub;")))
 
-(defun show-data (db-path name)
+(defun show-count-data (db-path name)
   (dbi:with-connection (conn :sqlite3 :database-name db-path)
     (let ((data
            (fetch-db conn

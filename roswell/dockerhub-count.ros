@@ -1,0 +1,19 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '(:cl-useful-rabish) :silent t)
+  )
+
+(defpackage :ros.script.dockerhub-count.3789980541
+  (:use :cl)
+  (:import-from :cl-useful-rabish/dockerhub-count :get-image-pull-count))
+(in-package :ros.script.dockerhub-count.3789980541)
+
+(defun main (image &rest argv)
+  (declare (ignorable argv))
+  (format t "~&~A~%" (get-image-pull-count image)))
+;;; vim: set ft=lisp lisp:

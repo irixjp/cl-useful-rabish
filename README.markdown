@@ -4,6 +4,8 @@
 
 ## Installation
 
+`ros install irixjp/cl-useful-rabish`
+
 ## License
 
 Licensed under the MIT License License.

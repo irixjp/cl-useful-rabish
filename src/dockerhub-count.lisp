@@ -4,6 +4,8 @@
   (:import-from :dexador)
   (:import-from :jonathan)
   (:import-from :cl-ppcre)
+  (:export :get-image-pull-count
+           :get-image-tags-list)
   (:documentation "Show container image infomation that is gotten from docekrhub."))
 (in-package :cl-useful-rabish/dockerhub-count)
 
@@ -24,9 +26,12 @@
     data))
 
 (defun get-image-pull-count (image)
-  (get-image-info image "pull_count"))
+  (handler-case
+      (get-image-info image "pull_count")
+    (error (e)
+      (format t "~&Error: ~A~%" e))))
 
-(defun get-tags-list (image)
+(defun get-image-tags-list (image)
   (let* ((url (quri:make-uri :defaults
                              (concatenate 'string
                                           *docker-hub-api*
