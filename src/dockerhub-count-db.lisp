@@ -2,6 +2,7 @@
   (:use :cl)
   (:import-from :cl-dbi)
   (:import-from :cl-useful-rabish/dockerhub-count :get-image-pull-count)
+  (:export :init-db :insert-count-data :show-count-data)
   (:documentation "Show container image infomation that is gotten from docekrhub."))
 (in-package :cl-useful-rabish/dockerhub-count-db)
 
@@ -52,7 +53,6 @@
          :collect (list (getf i :|date|)
                         (getf i :|count|))))))
 
-
 ;; The below is for data migration
 ;; (defvar *data* nil)
 ;; (defun load-text (file)
@@ -70,33 +70,3 @@
 ;;                      (fifth i))))))
 
 
-;;(eazy-gnuplot:with-plots (*standard-output* :debug t)
-;;  (eazy-gnuplot:gp-setup :xlabel "x-date"
-;;                         :ylabel "y-downloaded"
-;;                         :output #p"sample.png"
-;;                         :terminal :png
-;;                         :key '(:bottom :right :font "Times New Roman, 6")
-;;                         :xrange :|[0:50]|
-;;                         :yrange :|[0:50]|)
-;;  ;;(format t "~%unset key")
-;;  (eazy-gnuplot:plot (lambda ()
-;;                       (format t "~&10 15")
-;;                       (format t "~&20 25")
-;;                       (format t "~&30 35"))
-;;                     :title "katacoda"
-;;                     :with '(:linespoint :pt 7)))
-
-
-;(defmacro db-conn-with (conn db-path &body body)
-;  `((dbi:with-connection (,conn :sqlite3 :database-name ,db-path)
-;      (progn ,@body))))
-; 
-;(defmacro my-when (form &body body)
-;  (let ((conn (gensym)))
-;    `(if ,form
-;        (progn
-;          ,@body))))
-; 
-;(defmacro query (conn db-path &body body)
-;  `(dbi:with-connection (,conn :sqlite3 :database-name ,db-path)
-;     (progn ,@body)))

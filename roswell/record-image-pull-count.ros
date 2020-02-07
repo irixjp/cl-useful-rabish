@@ -1,0 +1,26 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '(:cl-useful-rabish) :silent t)
+  )
+
+(defpackage :ros.script.record-image-pull-count.3790039265
+  (:use :cl)
+  (:import-from :cl-useful-rabish/dockerhub-count-db :insert-count-data :init-db))
+(in-package :ros.script.record-image-pull-count.3790039265)
+
+(defun main (image db-path &rest argv)
+  (declare (ignorable argv))
+  (handler-case
+      (progn
+        (init-db db-path)
+        (insert-count-data db-path image)
+        (uiop:quit 0))
+    (error (e)
+      (format t "~&Error: ~A~%" e)
+      (uiop:quit 1))))
+;;; vim: set ft=lisp lisp:
