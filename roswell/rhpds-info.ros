@@ -16,7 +16,8 @@ exec ros -Q -- $0 "$@"
 (defun main (url &rest argv)
   (declare (ignorable argv))
   (handler-case
-      (cl-useful-rabish/rhpds-info:make-ansible-inventory (students-info-list url))
+      (cl-useful-rabish/rhpds-info:make-ansible-inventory
+       (cl-useful-rabish/rhpds-info:students-info-list url))
     (error (e)
       (format *standard-output* "~&Error: ~A~%" e)
       (uiop:quit -1))))
